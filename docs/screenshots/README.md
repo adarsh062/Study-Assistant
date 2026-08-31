@@ -6,5 +6,3 @@ Drop your screenshot images here:
 - `quiz.png` - Interactive quiz and feedback view
 - `retry.png` - Wrong answer retry session
 
-![alt text](image.png)
-![alt text](image.png)![alt text](image.png)
