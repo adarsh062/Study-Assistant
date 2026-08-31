@@ -1,2 +1,22 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Node modules
+node_modules/
 /node_modules
-node_modules
+
+# Build
+dist/
+dist-ssr/
+*.local
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# Editor directories
+.vscode/
+.idea/
