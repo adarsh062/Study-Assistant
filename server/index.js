@@ -62,6 +62,7 @@ You MUST respond ONLY with a valid JSON object matching this exact schema:
 Generate between 3 to 6 flashcards and 3 to 5 multiple-choice quiz questions. Return pure JSON only without any markdown wrap or extra commentary.`;
 
   try {
+    const model = process.env.GROQ_MODEL || 'openai/gpt-oss-120b';
     const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -69,7 +70,7 @@ Generate between 3 to 6 flashcards and 3 to 5 multiple-choice quiz questions. Re
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model,
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: input.trim() },
