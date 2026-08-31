@@ -8,6 +8,7 @@ import React from 'react';
  * @param {() => void} [props.onClick] - Click handler function
  * @param {boolean} [props.disabled] - Disabled state
  * @param {boolean} [props.isLoading] - Loading indicator state
+ * @param {'primary' | 'secondary' | 'outline' | 'ghost'} [props.variant] - Button style variant
  * @param {string} [props.type] - HTML button type ('button' | 'submit' | 'reset')
  * @param {string} [props.className] - Additional CSS classes
  */
@@ -16,14 +17,17 @@ export default function Button({
   onClick,
   disabled = false,
   isLoading = false,
+  variant = 'primary',
   type = 'button',
   className = '',
   ...rest
 }) {
+  const variantClass = variant ? `btn-${variant}` : 'btn-primary';
+
   return (
     <button
       type={type}
-      className={`btn btn-primary ${className}`.trim()}
+      className={`btn ${variantClass} ${className}`.trim()}
       onClick={onClick}
       disabled={disabled || isLoading}
       aria-busy={isLoading}

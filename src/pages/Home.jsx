@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Header from '../components/Header';
 import TopicInput from '../components/TopicInput';
 import Button from '../components/Button';
+import StudySet from '../components/StudySet';
 import { validateStudySet } from '../utils/validateStudySet';
 
 /**
@@ -192,35 +193,8 @@ export default function Home() {
         </section>
       )}
 
-      {/* Part 2 Developer-friendly preview of the structured JSON response */}
-      {studySet && (
-        <section className="result-container" aria-live="polite">
-          <div className="result-header">
-            <div className="result-title-group">
-              <span className="result-badge">✓ Backend AI Integration Verified</span>
-              <h2 className="result-title">{studySet.title || 'Generated Study Set'}</h2>
-            </div>
-          </div>
-
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-value">{studySet.flashcards?.length || 0}</div>
-              <div className="stat-label">Flashcards Generated</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">{studySet.quiz?.length || 0}</div>
-              <div className="stat-label">Quiz Questions Generated</div>
-            </div>
-          </div>
-
-          <div className="json-viewer-header">
-            <span className="json-viewer-label">Structured JSON Payload (Developer Preview)</span>
-          </div>
-          <pre className="json-viewer">
-            <code>{JSON.stringify(studySet, null, 2)}</code>
-          </pre>
-        </section>
-      )}
+      {/* Interactive Study Set (Flashcards & Quiz) */}
+      {studySet && <StudySet studySet={studySet} />}
     </div>
   );
 }
