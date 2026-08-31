@@ -1,25 +1,21 @@
 # Student Assistant
 
-> **Technical Assessment / Coding Assignment Submission**  
-> An interactive full-stack application that transforms raw notes and topics into structured, 3D interactive flashcards and self-scoring multiple-choice quizzes using a defensive AI data pipeline.
+> An interactive full-stack application that transforms raw notes and topics into structured, interactive flashcards and self-scoring multiple-choice quizzes using a defensive AI data pipeline.
 
 ---
 
 ## 📸 Screenshots & Demo
 
-Add screenshots of the running application inside the [`docs/screenshots/`](./docs/screenshots/) folder:
 
-| 1. Topic Input & Generator | 2. 3D Interactive Flashcards |
+| 1. Topic Input & Generator | 2. Interactive Flashcards |
 |:---:|:---:|
 | ![Topic Input](./docs/screenshots/home.png) | ![Interactive Flashcards](./docs/screenshots/flashcards.png) |
 | *Enter custom text or choose sample topics* | *Flip cards with keyboard/click + progress tracker* |
 
-| 3. Quiz & Instant Feedback | 4. Targeted Retry Session |
+| 3. Quiz  | 4. Targeted Retry Session |
 |:---:|:---:|
 | ![Interactive Quiz](./docs/screenshots/quiz.png) | ![Quiz Retry](./docs/screenshots/retry.png) |
 | *Immediate scoring with clear visual feedback* | *Retry only missed questions without extra API calls* |
-
-> *Note: To update or view the screenshots, place your images in `docs/screenshots/` with names `home.png`, `flashcards.png`, `quiz.png`, and `retry.png`.*
 
 ---
 
