@@ -3,6 +3,8 @@ import Header from '../components/Header';
 import TopicInput from '../components/TopicInput';
 import Button from '../components/Button';
 import StudySet from '../components/StudySet';
+import LoadingState from '../components/LoadingState';
+import EmptyState from '../components/EmptyState';
 import { validateStudySet } from '../utils/validateStudySet';
 
 /**
@@ -165,36 +167,45 @@ export default function Home() {
       {/* Error alert message */}
       {error && (
         <section className="error-banner" role="alert">
-          <svg
-            className="error-icon"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
-              clipRule="evenodd"
-            />
-          </svg>
+          <div className="error-icon-wrapper" aria-hidden="true">
+            <svg
+              className="error-icon"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
           <div className="error-content">
             <h3 className="error-title">Generation Error</h3>
             <p className="error-message">{error}</p>
-            <button
-              type="button"
-              className="error-retry-btn"
-              onClick={handleGenerate}
-              disabled={isLoading || isInputEmpty}
-              aria-label="Retry generation"
-            >
-              Try Again
-            </button>
+            <div className="error-actions">
+              <Button
+                variant="outline"
+                onClick={handleGenerate}
+                disabled={isLoading || isInputEmpty}
+                aria-label="Retry generating study set"
+                className="error-retry-btn"
+              >
+                ↺ Try Again
+              </Button>
+            </div>
           </div>
         </section>
       )}
 
+      {/* Progressive Loading Experience */}
+      {isLoading && <LoadingState />}
+
       {/* Interactive Study Set (Flashcards & Quiz) */}
-      {studySet && <StudySet studySet={studySet} />}
+      {!isLoading && studySet && <StudySet studySet={studySet} />}
+
+      {/* Initial Empty State before generation */}
+      {!isLoading && !studySet && !error && <EmptyState />}
     </div>
   );
 }
