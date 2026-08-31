@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { validateStudySet } from '../src/utils/validateStudySet.js';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -100,18 +101,33 @@ Generate between 3 to 6 flashcards and 3 to 5 multiple-choice quiz questions. Re
     try {
       parsedStudySet = JSON.parse(rawContent);
     } catch (parseError) {
-      console.error('Failed to parse AI JSON response:', rawContent);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Failed to parse AI JSON response:', rawContent);
+      }
       return res.status(502).json({
         error: 'Failed to parse AI response into JSON format.',
       });
     }
 
-    // Return structured study set
-    return res.status(200).json(parsedStudySet);
+    // Validate the parsed study set structure
+    const validation = validateStudySet(parsedStudySet);
+    if (!validation.isValid) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('AI response validation failed on server:', validation.error);
+      }
+      return res.status(502).json({
+        error: `AI response failed schema validation: ${validation.error}`,
+      });
+    }
+
+    // Return sanitized and validated study set
+    return res.status(200).json(validation.data);
   } catch (err) {
-    console.error('Server error during study set generation:', err);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Server error during study set generation:', err);
+    }
     return res.status(500).json({
-      error: `Internal server error: ${err.message || 'Unknown error'}`,
+      error: 'An internal server error occurred while generating the study set. Please try again.',
     });
   }
 });

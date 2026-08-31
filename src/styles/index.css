@@ -325,6 +325,29 @@ body {
   line-height: 1.5;
 }
 
+.error-retry-btn {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-error-text);
+  background-color: transparent;
+  border: 1px solid var(--color-error-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.error-retry-btn:hover:not(:disabled) {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: var(--color-error-text);
+}
+
+.error-retry-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ==========================================================================
    API Verification & Study Set Preview (Part 2)
    ========================================================================== */

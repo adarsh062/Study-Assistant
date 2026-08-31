@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Header from '../components/Header';
 import TopicInput from '../components/TopicInput';
 import Button from '../components/Button';
+import { validateStudySet } from '../utils/validateStudySet';
 
 /**
- * Home page for Study Assistant (Part 2 Backend AI Integration).
+ * Home page for Study Assistant.
  * Handles user input state, API communication with the backend,
- * loading/error states, and structured JSON verification.
+ * request lifecycle & stale response cancellation, structured schema validation,
+ * error handling, and structured study set presentation.
  */
 export default function Home() {
   const [topicText, setTopicText] = useState('');
@@ -14,11 +16,35 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [studySet, setStudySet] = useState(null);
 
+  // Track the current active request ID to ignore stale out-of-order responses
+  const activeRequestIdRef = useRef(0);
+  // Track the AbortController to cancel in-flight HTTP requests when a new one begins
+  const abortControllerRef = useRef(null);
+
+  // Cleanup pending requests on unmount
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
+
   // Disable button if input is empty, whitespace-only, or currently loading
   const isInputEmpty = topicText.trim().length === 0;
 
   const handleGenerate = async () => {
     if (isInputEmpty || isLoading) return;
+
+    // Abort any ongoing request before initiating a new one
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    // Set up new AbortController and increment request ID
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+    const currentRequestId = ++activeRequestIdRef.current;
 
     setIsLoading(true);
     setError(null);
@@ -31,22 +57,75 @@ export default function Home() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ input: topicText.trim() }),
+        signal: controller.signal,
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || `Server responded with status ${response.status}`);
+      // Stale request check
+      if (currentRequestId !== activeRequestIdRef.current) {
+        return;
       }
 
-      setStudySet(data);
+      // Safe JSON parsing to handle malformed JSON
+      const rawText = await response.text();
+      let parsedData;
+      try {
+        parsedData = rawText ? JSON.parse(rawText) : null;
+      } catch (jsonErr) {
+        if (import.meta.env.DEV) {
+          console.error('[StudyMate] Malformed JSON response received:', rawText, jsonErr);
+        }
+        throw new Error('Received an unreadable response from the server. Please try again.');
+      }
+
+      // Check HTTP status errors
+      if (!response.ok) {
+        const serverErrorMessage = parsedData?.error || `Request failed with status ${response.status}.`;
+        throw new Error(serverErrorMessage);
+      }
+
+      // Handle completely empty response body
+      if (!parsedData) {
+        throw new Error('The server returned an empty response. Please try again.');
+      }
+
+      // Validate the data against our central study set schema
+      const validation = validateStudySet(parsedData);
+      if (!validation.isValid) {
+        if (import.meta.env.DEV) {
+          console.error('[StudyMate] Response failed schema validation:', validation.error, parsedData);
+        }
+        throw new Error(
+          'The AI generated an incomplete or invalid study set structure. Please retry generating.'
+        );
+      }
+
+      // Only update state if this is still the active request
+      if (currentRequestId === activeRequestIdRef.current) {
+        setStudySet(validation.data);
+      }
     } catch (err) {
-      console.error('Error generating study set:', err);
+      // If the request was intentionally aborted (e.g. user initiated newer request), ignore silently
+      if (err.name === 'AbortError') {
+        return;
+      }
+
+      // Ignore errors from stale superseded requests
+      if (currentRequestId !== activeRequestIdRef.current) {
+        return;
+      }
+
+      if (import.meta.env.DEV) {
+        console.error('[StudyMate] Error generating study set:', err);
+      }
+
       setError(
-        err.message || 'Unable to connect to the backend server. Please make sure the backend is running.'
+        err.message || 'Unable to connect to the backend server. Please check your connection and retry.'
       );
     } finally {
-      setIsLoading(false);
+      // Only reset loading if this is the active request
+      if (currentRequestId === activeRequestIdRef.current) {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -100,6 +179,15 @@ export default function Home() {
           <div className="error-content">
             <h3 className="error-title">Generation Error</h3>
             <p className="error-message">{error}</p>
+            <button
+              type="button"
+              className="error-retry-btn"
+              onClick={handleGenerate}
+              disabled={isLoading || isInputEmpty}
+              aria-label="Retry generation"
+            >
+              Try Again
+            </button>
           </div>
         </section>
       )}
