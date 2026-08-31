@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Flashcard from './Flashcard';
 import ProgressIndicator from './ProgressIndicator';
 import Button from './Button';
+import Quiz from './Quiz';
 
 /**
  * StudySet component.
@@ -184,26 +185,18 @@ export default function StudySet({ studySet }) {
         </div>
       )}
 
-      {/* QUIZ PANEL (Prepared for upcoming step) */}
+      {/* QUIZ PANEL */}
       {activeTab === 'quiz' && (
         <div
           id="quiz-panel"
           role="tabpanel"
           aria-labelledby="quiz-tab"
-          className="study-mode-panel quiz-preview-panel"
+          className="study-mode-panel"
         >
-          <div className="quiz-placeholder-card">
-            <span className="placeholder-icon">📝</span>
-            <h3 className="placeholder-title">Quiz Mode Ready</h3>
-            <p className="placeholder-desc">
-              This study set includes <strong>{quiz.length} verified multiple-choice questions</strong> ready to test your knowledge.
-            </p>
-            <div className="quiz-summary-badges">
-              <span className="summary-badge">{quiz.length} Questions</span>
-              <span className="summary-badge">4 Options Per Question</span>
-              <span className="summary-badge">Instant Verification</span>
-            </div>
-          </div>
+          <Quiz
+            questions={quiz}
+            onStudyFlashcards={() => setActiveTab('flashcards')}
+          />
         </div>
       )}
     </section>
