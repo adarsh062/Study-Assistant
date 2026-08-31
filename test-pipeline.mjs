@@ -1,7 +1,7 @@
 import { validateStudySet } from './src/utils/validateStudySet.js';
 
 console.log('====================================================');
-console.log('Running Test Suite: StudyMate AI Pipeline & Validation');
+console.log('Running Test Suite: Student Assistant AI Pipeline & Validation');
 console.log('====================================================\n');
 
 let passedTests = 0;

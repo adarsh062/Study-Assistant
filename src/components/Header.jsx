@@ -24,7 +24,7 @@ export default function Header() {
         </div>
         <div className="header-title-container">
           <div className="header-title-row">
-            <h1 className="header-title">StudyMate</h1>
+            <h1 className="header-title">Student Assistant</h1>
             <span className="header-tag-badge">AI Assistant</span>
           </div>
         </div>

@@ -2,7 +2,7 @@ import React from 'react';
 
 /**
  * EmptyState component.
- * Displays an inviting initial preview explaining how StudyMate works
+ * Displays an inviting initial preview explaining how Student Assistant works
  * before a study set has been generated.
  */
 export default function EmptyState() {

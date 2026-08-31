@@ -1,5 +1,5 @@
 /**
- * Central validation layer for StudyMate study sets.
+ * Central validation layer for Student Assistant study sets.
  * Validates the structure and constraints of AI-generated study set data
  * before it is accepted into the application state.
  *

@@ -1,5 +1,5 @@
 console.log('====================================================');
-console.log('Running Test Suite: StudyMate Quiz Logic & Flow');
+console.log('Running Test Suite: Student Assistant Quiz Logic & Flow');
 console.log('====================================================\n');
 
 let passedTests = 0;

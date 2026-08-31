@@ -9,7 +9,7 @@ export default function App() {
     <div className="app-container">
       <Home />
       <footer className="app-footer">
-        <p>StudyMate &bull; AI Study Assistant</p>
+        <p>Student Assistant &bull; AI Study Assistant</p>
       </footer>
     </div>
   );

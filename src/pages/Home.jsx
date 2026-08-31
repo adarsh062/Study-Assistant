@@ -75,7 +75,7 @@ export default function Home() {
         parsedData = rawText ? JSON.parse(rawText) : null;
       } catch (jsonErr) {
         if (import.meta.env.DEV) {
-          console.error('[StudyMate] Malformed JSON response received:', rawText, jsonErr);
+          console.error('[Student Assistant] Malformed JSON response received:', rawText, jsonErr);
         }
         throw new Error('Received an unreadable response from the server. Please try again.');
       }
@@ -95,7 +95,7 @@ export default function Home() {
       const validation = validateStudySet(parsedData);
       if (!validation.isValid) {
         if (import.meta.env.DEV) {
-          console.error('[StudyMate] Response failed schema validation:', validation.error, parsedData);
+          console.error('[Student Assistant] Response failed schema validation:', validation.error, parsedData);
         }
         throw new Error(
           'The AI generated an incomplete or invalid study set structure. Please retry generating.'
@@ -118,7 +118,7 @@ export default function Home() {
       }
 
       if (import.meta.env.DEV) {
-        console.error('[StudyMate] Error generating study set:', err);
+        console.error('[Student Assistant] Error generating study set:', err);
       }
 
       setError(

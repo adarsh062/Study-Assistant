@@ -1,163 +1,176 @@
-# StudyMate
+# Student Assistant
 
-StudyMate is an interactive, AI-powered study assistant that transforms free-form notes and topics into structured flashcards and self-scoring quizzes in seconds.
-
----
-
-## Overview
-
-StudyMate helps students and learners rapidly synthesize raw study materials, lecture notes, or complex topics into active recall flashcards and knowledge-checking quizzes. The app features a resilient AI data pipeline with strict schema validation, defensive backend architecture, race-condition protection, and accessible study modes.
+> **Technical Assessment / Coding Assignment Submission**  
+> An interactive full-stack application that transforms raw notes and topics into structured, 3D interactive flashcards and self-scoring multiple-choice quizzes using a defensive AI data pipeline.
 
 ---
 
-## Features
+## 📸 Screenshots & Demo
 
-- **AI-Generated Flashcards**: Automatically extracts core concepts, terms, and definitions into concise, high-yield flashcard decks.
-- **Interactive 3D Flashcards**: Flip cards using mouse clicks or keyboard navigation (`Space` / `Enter`), with full previous/next navigation, step indicators, and a completion review trigger.
-- **AI-Generated Multiple-Choice Quizzes**: Generates 4-option multiple-choice questions directly assessing comprehension of the input material.
-- **Instant Quiz Scoring & Feedback**: Immediate visual evaluation highlighting correct answers in green and incorrect selections in red with explanatory text (independent of color alone for accessibility).
-- **Targeted Wrong-Answer Retry**: Isolates missed questions into a dedicated sub-quiz session without making additional AI requests, preserving original options and answers.
-- **Robust Error & Loading States**: Animated progressive loading cards with informative copy, alongside resilient error handling with one-click retry.
-- **Responsive & Accessible UI**: Responsive layout tested from mobile devices (320px, 375px) to desktops (1024px+), complete with visible `:focus-visible` states and accessible ARIA attributes.
+Add screenshots of the running application inside the [`docs/screenshots/`](./docs/screenshots/) folder:
 
----
+| 1. Topic Input & Generator | 2. 3D Interactive Flashcards |
+|:---:|:---:|
+| ![Topic Input](./docs/screenshots/home.png) | ![Interactive Flashcards](./docs/screenshots/flashcards.png) |
+| *Enter custom text or choose sample topics* | *Flip cards with keyboard/click + progress tracker* |
 
-## Tech Stack
+| 3. Quiz & Instant Feedback | 4. Targeted Retry Session |
+|:---:|:---:|
+| ![Interactive Quiz](./docs/screenshots/quiz.png) | ![Quiz Retry](./docs/screenshots/retry.png) |
+| *Immediate scoring with clear visual feedback* | *Retry only missed questions without extra API calls* |
 
-- **Frontend**: React 18 (Functional Components, Hooks), Vite 5, Vanilla CSS Design System
-- **Backend API**: Node.js, Express, CORS, Dotenv
-- **AI / LLM Integration**: Groq API (High-speed inference)
-- **Validation**: Custom Central Schema Validation Layer (`validateStudySet`)
-- **Typography & Icons**: Inter (Google Fonts), Semantic SVG Icons
+> *Note: To update or view the screenshots, place your images in `docs/screenshots/` with names `home.png`, `flashcards.png`, `quiz.png`, and `retry.png`.*
 
 ---
 
-## Setup
+## 🎯 Assignment Objective & Overview
 
-### Prerequisites
-- Node.js (v18 or higher recommended)
-- npm (Node Package Manager)
-
-### Installation & Running Locally
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/adarsh062/Study-Assistant.git
-   cd Study-Assistant
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Configure environment variables**:
-   Create a `.env` file in the project root:
-   ```bash
-   cp .env.example .env
-   ```
-   Add your API key:
-   ```env
-   PORT=5000
-   GROQ_API_KEY=your_actual_api_key_here
-   ```
-
-4. **Start the application**:
-   To run both backend server and frontend dev server concurrently:
-   ```bash
-   npm run dev:all
-   ```
-
-   Alternatively, run in two separate terminal tabs:
-   ```bash
-   # Terminal 1: Backend Server (Port 5000)
-   npm run server
-
-   # Terminal 2: Frontend Vite Dev Server (Port 5173)
-   npm run dev
-   ```
-
-5. **Open in browser**:
-   Navigate to `http://localhost:5173`.
-
-6. **Run Test Suites**:
-   ```bash
-   npm test
-   ```
+This project was built as a practical technical assignment to demonstrate:
+1. **Defensive AI Engineering**: Interfacing with an LLM (Groq) with strict system prompting, response cleaning, and multi-tier schema validation.
+2. **Robust State & Request Management**: Handling network race conditions, in-flight request cancellation (`AbortController`), and fast UI feedback.
+3. **Clean Component Architecture**: Modular React components (`Flashcard`, `QuizQuestion`, `QuizResult`, `TopicInput`) with zero component bloat.
+4. **Accessible & Responsive UX**: Custom vanilla CSS design system with keyboard navigation, visible focus indicators, mobile responsiveness (tested from 320px to 1440px+), and non-color-dependent feedback states.
 
 ---
 
-## Environment Variables
+## 🚀 Key Features
+
+- **AI-Powered Synthesis**: Converts unstructured notes, lecture points, or broad topics into high-yield flashcards and assessment questions.
+- **3D Flip Flashcards**: Active recall interface with smooth 3D flip animations, keyboard shortcuts (`Space` / `Enter` / arrows), and progress indicator.
+- **Interactive Self-Scoring Quiz**: 4-option multiple-choice quizzes with immediate validation (highlighting selected answer, correct answer, and descriptive feedback).
+- **Targeted Wrong-Answer Retry**: Isolates incorrectly answered questions into an instant retry mode without re-querying the LLM.
+- **Resilient Error States**: Clear, actionable error messaging with one-click retries and non-blocking recovery.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React 18, Vite 5, Custom Vanilla CSS Design System (no heavy UI libraries).
+- **Backend API**: Node.js, Express, CORS, Dotenv.
+- **AI Integration**: Groq API (High-speed inference via `openai/gpt-oss-120b`).
+- **Validation**: Custom bidirectional schema validation layer (`validateStudySet`).
+- **Testing**: Node test runner suites for validation pipeline (`test-pipeline.mjs`) and quiz logic (`test-quiz.mjs`).
+
+---
+
+## ⚙️ Setup & Running Locally
+
+### 1. Prerequisites
+- **Node.js**: v18.0.0 or higher
+- **npm**: v9.0.0 or higher
+- **Groq API Key**: (Free tier key from [console.groq.com](https://console.groq.com/))
+
+### 2. Installation
+```bash
+# Clone the repository
+git clone https://github.com/adarsh062/Study-Assistant.git
+cd Study-Assistant
+
+# Install dependencies
+npm install
+```
+
+### 3. Environment Configuration
+Create a `.env` file in the root directory:
+```bash
+cp .env.example .env
+```
+
+Open `.env` and provide your Groq API key:
+```env
+PORT=5000
+GROQ_API_KEY=your_actual_groq_api_key_here
+```
+
+### 4. Running the Project
+To run both backend API server and frontend Vite development server concurrently:
+```bash
+npm run dev:all
+```
+
+Or run them in separate terminals:
+```bash
+# Terminal 1 - Backend Server (Port 5000)
+npm run server
+
+# Terminal 2 - Frontend Client (Port 5173)
+npm run dev
+```
+
+Open your browser at **`http://localhost:5173`**.
+
+### 5. Running Automated Tests
+```bash
+npm test
+```
+
+---
+
+## 🔐 Environment Variables
 
 | Variable | Required | Description |
 |---|---|---|
-| `PORT` | Optional (default: `5000`) | Port on which the Express server listens. |
-| `GROQ_API_KEY` | **Required** | Secret API key used by the backend server to communicate with the AI provider. |
-| `GROQ_MODEL` | Optional | Groq model identifier (defaults to `openai/gpt-oss-120b`). |
+| `PORT` | Optional (default: `5000`) | Port for the Express backend API. |
+| `GROQ_API_KEY` | **Required** | Secret key for Groq LLM inference. |
+| `GROQ_MODEL` | Optional | Model identifier (defaults to `openai/gpt-oss-120b`). |
 
-> **Security Note**: `GROQ_API_KEY` is kept strictly on the Node.js backend server. It is never exposed in client bundles or committed to Git.
+> **Security Note**: `GROQ_API_KEY` is maintained exclusively on the backend server and never leaked to the client bundle.
 
 ---
 
-## How It Works
+## 🏗️ Architecture & Data Flow
 
 ```mermaid
 graph TD
     A[User Input / Topic Notes] --> B[React Frontend / Home.jsx]
     B -->|POST /api/generate-study-set| C[Express Backend / server/index.js]
-    C -->|Secure API Call with System Prompt| D[LLM API / Groq]
-    D -->|Structured JSON Response| C
-    C -->|validateStudySet Backend Check| C
-    C -->|Validated Study Set Payload| B
-    B -->|validateStudySet Client Check| E{Validation Passed?}
+    C -->|Strict JSON System Prompt| D[Groq LLM API]
+    D -->|Raw Model Response| C
+    C -->|validateStudySet Backend Verification| C
+    C -->|Sanitized Study Set Payload| B
+    B -->|validateStudySet Client Verification| E{Valid Structure?}
     E -->|Yes| F[StudySet State Updated]
-    E -->|No| G[User-Friendly Error Alert & Retry]
+    E -->|No| G[Actionable Error Alert + Retry]
     F --> H[Interactive Flashcards Mode]
     F --> I[Interactive Quiz & Retry Mode]
 ```
 
-1. **User input**: The user types or pastes notes into the textarea, or clicks a sample topic chip.
-2. **React client**: Submits the text via an in-flight cancellable fetch request (`AbortController` + `activeRequestIdRef`).
-3. **Backend API**: The Express server validates the payload and calls the LLM with a strict JSON system prompt.
-4. **Structured JSON**: The AI model returns a structured JSON payload containing `title`, `flashcards`, and `quiz`.
-5. **Central validation**: `validateStudySet` checks types, non-empty strings, exactly 4 options per quiz question, and exact answer matching.
-6. **Interactive UI**: State is populated into the `<StudySet />` component, enabling instant flashcard review, quiz testing, and targeted wrong-answer retry.
-
 ---
 
-## Error Handling & Pipeline Resilience
+## 🛡️ Error Handling & Defensive Design
 
-| Failure Scenario | Resolution Mechanism |
+| Edge Case / Failure | Handling Strategy |
 |---|---|
-| **Malformed JSON** | Safe `try/catch` wrapping around JSON parsing prevents application crashes and triggers a retryable error message. |
-| **Invalid Data Shape / Missing Fields** | Central validation layer rejects missing titles, empty flashcards, or non-array collections before state mutation. |
-| **Quiz Schema Violations** | Asserts exactly 4 options per question and guarantees that `answer` is one of the 4 provided options. |
-| **API & Network Failures** | Backend captures upstream status codes and returns clean JSON error descriptions without exposing raw stack traces. |
-| **Empty Responses** | Checks for null/blank payloads and displays an actionable retry alert while preserving user input. |
-| **Slow / Stale Requests (Race Conditions)** | Uses `AbortController` to cancel superseded requests and an `activeRequestIdRef` counter to discard out-of-order responses (e.g. Topic A arriving after Topic B). |
+| **Malformed JSON from AI** | Markdown cleanup regex + safe `try/catch` JSON parse with clear fallback error. |
+| **Missing / Incomplete Fields** | `validateStudySet` verifies non-empty title, array bounds, and field types before state updates. |
+| **Invalid Quiz Options / Answer** | Enforces exactly 4 distinct options and verifies that `answer` strictly exists in `options`. |
+| **Upstream API Downtime / 429** | Backend intercepts API errors and returns descriptive HTTP status codes and friendly user messages. |
+| **Race Conditions (Fast Typing / Clicks)** | Frontend uses `AbortController` + sequential request ID tracking to cancel stale in-flight requests. |
 
 ---
 
-## AI Usage
+## 🧪 Automated Testing
 
-AI coding tools (including Antigravity IDE and LLM code assistance) were used during the development of this project for brainstorming architectural patterns, scaffolding UI boilerplates, and creating test cases.
+The project includes isolated test suites:
+- **`test-pipeline.mjs`**: Validates schema compliance, rejects malformed payloads, verifies empty string detection, and tests fallback logic.
+- **`test-quiz.mjs`**: Validates scoring logic, answer evaluation, percentage calculations, and targeted retry extraction.
 
-All generated code, schemas, components, and CSS styles were manually reviewed, debugged, refactored, and verified through automated test suites (`test-pipeline.mjs`, `test-quiz.mjs`) and responsive viewport smoke tests.
-
----
-
-## Known Limitations
-
-1. **In-Memory State**: Study sets and quiz scores are stored in React component state and reset on page refresh (no persistent database).
-2. **LLM Context Length**: Very large texts exceeding standard context window limits should be condensed before input.
-3. **Single Active Generation**: Only one generation request is processed at a time per client session (subsequent requests cancel previous requests).
+Run all tests:
+```bash
+npm test
+```
 
 ---
 
-## Time Spent
+## ⏱️ Time Allocation
 
-- **Architecture & Setup**: ~1.5 hours
-- **Validation Pipeline & API Integration**: ~2 hours
-- **Flashcard & Quiz Interactive Experience**: ~2.5 hours
-- **UI/UX Polish, Accessibility & Testing**: ~2 hours
-- **Total Development Time**: ~8 hours
+- **Architecture, Setup & API Proxy**: ~1.5 hrs
+- **Validation Layer & Defensive Pipeline**: ~2.0 hrs
+- **Flashcard 3D Interaction & Quiz Engine**: ~2.5 hrs
+- **UI/UX Polish, Accessibility & Responsive Testing**: ~2.0 hrs
+- **Total Development**: **~8.0 hrs**
+
+---
+
+## 💡 Notes on AI Usage
+AI tools (Antigravity IDE & LLM assistance) were utilized during the development workflow for scaffolding boilerplates and sanity-checking test cases. All architecture, error pipelines, validation rules, component logic, and CSS styling were individually reviewed, refined, and tested for quality assurance.
